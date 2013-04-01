@@ -1,4 +1,4 @@
-EXPORT Constants := MODULE
+﻿EXPORT Constants := MODULE
   // Limit Constants
   EXPORT Max_SearchTerms := 1000;
   EXPORT Max_Ops  := 2 * Max_SearchTerms;
@@ -16,9 +16,6 @@ EXPORT Constants := MODULE
   EXPORT Max_Msg_Length := 75;
   EXPORT Max_Types  := 5;
   EXPORT Max_Node_Depth := 50;
-  EXPORT Max_RCI_List := 2000;
-  EXPORT Max_RCI_Merge := 60;
-  EXPORT Max_RCI_NOT := 300;
 
   // Nominal Constants
   EXPORT Nominal_SeqKey      := 1024;
@@ -26,10 +23,6 @@ EXPORT Constants := MODULE
   EXPORT Nominal_DocBegin    := 1026;
   EXPORT Nominal_DocEnd      := 1027;
   EXPORT Nominal_Noone       := 1028;
-
-  // Other constants
-  EXPORT RCI_Term_ID        := Max_SearchTerms + 2;
-  EXPORT RCI_Token_Len      := 10;
 
   // Message Constants
   SHARED Base := 1000;        // may need to change this
