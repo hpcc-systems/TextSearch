@@ -70,14 +70,7 @@ EXPORT Layouts := MODULE
     Types.TermString          term2;
     Types.TermString          kw2;
   END;
-  EXPORT PathPosting := RECORD
-    Types.Depth       pathLen;          // Depth of terminal node
-    Types.Depth       pos;              // ordinal position in path
-    Types.Nominal     path;             // Nominal for Path
-    Types.DataType    typData;          // Type of terminal node
-    Types.Nominal     nominal;          // Nominal of Element or Attribute
-  END;
-  // Dictionary, combined terms and XML items
+  // Dictionary
   EXPORT TermDictionaryEntry := RECORD
     Types.TermString        term;
     Types.TermString        kw;
@@ -86,5 +79,15 @@ EXPORT Layouts := MODULE
     Types.Nominal           nominal;
     Types.Frequency         termFreq;
     Types.Frequency         docFreq;
+  END;
+  // Dictionary Paths and all tags
+  EXPORT TagDictionaryEntry := RECORD
+    Types.TermString        tag;
+    Types.TermString        pathString;
+    Types.TermType          typTerm;
+    Types.DataType          typData;
+    Types.Nominal           nominal;
+    Types.Nominal           path;
+    Types.Depth             pathLen;
   END;
 END;

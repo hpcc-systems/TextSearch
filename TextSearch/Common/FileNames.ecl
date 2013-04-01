@@ -24,7 +24,6 @@ EXPORT FileNames(FileName_Info info) := MODULE
   EXPORT ElementIndex(UNSIGNED lvl=0) := Name('ElemIndx', lvl);
   EXPORT AttributeIndex(UNSIGNED lvl=0) := Name('AttrIndx', lvl);
   EXPORT RangeIndex(UNSIGNED lvl=0) := Name('RngIndx', lvl);
-  EXPORT PathIndex(UNSIGNED lvl=0) := Name('PathIndx', lvl);
   EXPORT NameSpaceDict(UNSIGNED lvl=0) := Name('SpaceIndx', lvl);
   EXPORT TagDictionary(UNSIGNED lvl=0) := Name('TagIndx', lvl);
   EXPORT IdentIndx(UNSIGNED1 lvl=0) := Name('IdentIndx', lvl);

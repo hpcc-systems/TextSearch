@@ -6,15 +6,15 @@ FileNames           := Common.FileNames;
 Types               := Common.Types;
 AttributeParts      := Common.AttributeParts;
 TermDictionaryEntry := Common.Layouts.TermDictionaryEntry;
+TagDictionaryEntry  := COmmon.Layouts.TagDictionaryEntry;
 Posting             := Common.Layouts.Posting;
-PathPosting         := Common.Layouts.PathPosting;
 PhrasePosting       := Common.Layouts.PhrasePosting;
 DocIndex            := Common.Layouts.DocIndex;
 DeletedDoc          := Common.Layouts.DeletedDoc;
 // Default streams
 emptyDict := DATASET([], TermDictionaryEntry);
+emptyTag  := DATASET([], TagDictionaryEntry);
 emptyPost := DATASET([], Posting);
-emptyPath := DATASET([], PathPosting);
 emptyPhrs := DATASET([], PhrasePosting);
 emtpyDocs := DATASET([], DocIndex);
 emptyDelx := DATASET([], DeletedDoc);
@@ -26,6 +26,11 @@ EXPORT Keys(FileName_Info info, UNSIGNED1 lvl=0) := MODULE
                       {termFreq, docFreq, kw, term},
                       FileNames(info).TermDictionary(lvl), SORTED);
 
+  // Tag Dictionary
+  EXPORT TagDictionary(DATASET(TagDictionaryEntry) d=emptyTag)
+             := INDEX(d, {UNICODE20 tag20:=tag[1..20], typData, nominal, pathLen},
+                      {path, typTerm, tag, pathString},
+                      FileNames(info).TagDictionary(lvl), SORTED);
   // Term Inversion
   EXPORT TermIndex(DATASET(Posting) d=emptyPost)
     := INDEX(d, {typTerm, nominal, id, kwpBegin, start, kwpEnd,
@@ -39,7 +44,6 @@ EXPORT Keys(FileName_Info info, UNSIGNED1 lvl=0) := MODULE
                  parent, parentOrd, depth, preorder, firstord, lastOrd, typData},
              {textStart, textStop, typData, term},
              FileNames(info).ElementIndex(lvl), SORTED);
-
 
   // Phrase Index keys
   EXPORT PhraseIndex(DATASET(PhrasePosting) d=emptyPhrs)
@@ -64,5 +68,18 @@ EXPORT Keys(FileName_Info info, UNSIGNED1 lvl=0) := MODULE
                  Types.TermString attrValue:=kw, term},
               FileNames(info).RangeIndex(lvl), SORTED);
 
+  // Document Index
+  EXPORT DocumentIndex(DATASET(DocIndex) d=emtpyDocs)
+    := INDEX(d, {id, keywords, docLength, seqKey}, {identifier, slugLine, wunit},
+             FileNames(info).DocumentIndex(lvl), SORTED);
 
+  // Deleted document index
+  EXPORT DeleteIndex(DATASET(DeletedDoc) d=emptyDelx)
+    := INDEX(d, {id}, {identifier}, FileNames(info).DeleteIndex(lvl), SORTED);
+
+  // Document Ident index
+  EXPORT IdentIndex(DATASET(DocIndex) d=emtpyDocs)
+    := INDEX(d, {Types.Nominal nominal:=HASH32(identifier), id},
+                {identifier},
+             FileNames(info).IdentIndx(lvl), SORTED);
 END;
