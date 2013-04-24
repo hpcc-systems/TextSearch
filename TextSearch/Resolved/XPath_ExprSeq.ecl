@@ -1,16 +1,17 @@
-IMPORT XCR_Common;
+﻿IMPORT TextSearch.Resolved;
+IMPORT TextSearch.Resolved.Layouts;
+IMPORT TextSearch.Resolved.Types;
+IMPORT TextSearch.Common;
 
-InfoBlock := XCR_Common.Options.Model;
-TokenEntry:= RequestTokens.TokenEntry;
-TokenType	:= RequestTokens.TokenType;
+InfoBlock := Common.Filename_Info;
+TokenEntry:= Resolved.RequestTokens.TokenEntry;
+TokenType	:= Resolved.RequestTokens.TokenType;
 XML_Filter:= Layouts.XML_Filter;
 NodeEntry := Layouts.NodeEntry;
 Path_Answer:= Layouts.Path_Answer;
 Path_Query:= Layouts.Path_Query;
-Element		:= Types.NodeType.Element;
-Singleton	:= Types.NodeType.Singleton;
+Element		:= Types.DataType.Element;
 Attribute	:= Types.NodeType.Attribute;
-PCDATA		:= Types.NodeType.PCDATA;
 
 
 EXPORT  XPath_ExprSeq(InfoBlock info, DATASET(TokenEntry) tokEntry) := FUNCTION

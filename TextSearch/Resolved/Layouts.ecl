@@ -1,4 +1,4 @@
-IMPORT TextSearch.Resolved.Types;
+﻿IMPORT TextSearch.Resolved.Types;
 IMPORT TextSearch.Common.Constants;
 EXPORT Layouts := MODULE
   // Search Request processing
@@ -27,8 +27,8 @@ EXPORT Layouts := MODULE
     UNSIGNED4          n1Arg;
     UNSIGNED4          n2Arg;
     Types.TermID       id;
-    Types.NodeType     typXML;
-    Types.WordType     typWord;
+    Types.DataType     typData;
+    Types.TermType     typTerm;
     BOOLEAN            suppress;
     BOOLEAN            chkParent;
     BOOLEAN            wsBetween;
@@ -60,7 +60,7 @@ EXPORT Layouts := MODULE
   END;
   EXPORT Path_Query := RECORD
     Types.Ordinal      ref;
-    Types.NodeType     typTarget;
+    Types.DataType     typTarget;
     DATASET(NodeEntry) nodes{MAXCOUNT(Constants.Max_Node_Depth)};
   END;
   EXPORT Path_Answer := RECORD
@@ -71,8 +71,8 @@ EXPORT Layouts := MODULE
     Types.RqstOffset    getPosition;
     Types.RqstOffset    fltPosition;
     UNICODE             tagName{MAXLENGTH(Constants.Max_Token_Length)};
-    Types.NodeType      typXML;      // Element => [Element, Singleton]
-    Types.WordType      typWord;
+    Types.DataType      typData;
+    Types.TermType      typterm;
     Types.PathSet       pathSet{MAXCOUNT(Constants.Max_Path_Nominals)};
     Types.NominalSet    tagNominals{MAXCOUNT(2)};  // really just 1 or ALL
     Types.NominalSet    parents{MAXCOUNT(2)};
@@ -85,24 +85,24 @@ EXPORT Layouts := MODULE
   EXPORT HitRecord := RECORD
     Types.KWP           kwpBegin;
     Types.KWP           kwpEnd;
-    Types.NodePos       start;
-    Types.NodePos       stop;
+    Types.Position      start;
+    Types.Position      stop;
     Types.TermID        termID;
   END;
   EXPORT DocHit := RECORD
-    Types.DocID         docID;
+    Types.DocNo         id;
     HitRecord;
   END;
   EXPORT MergeWork := RECORD(DocHit)
     Types.Section       sect;
-    Types.WordType      typLast;
+    Types.TermType      typLast;
   END;
   EXPORT MergeWorkList := RECORD
-    Types.DocID         docID;
+    Types.DocNo         id;
     Types.KWP           kwpBegin;
-    Types.NodePos       start;
+    Types.Position      start;
     Types.KWP           kwpEnd;
-    Types.NodePos       stop;
+    Types.Position      stop;
     Types.Section       sect;
     Types.TermID        termID;
     Types.Ordinal       ord;
@@ -118,23 +118,23 @@ EXPORT Layouts := MODULE
     DATASET(HitRecord)  hits{MAXCOUNT(Constants.Max_Merge_Input)};
   END;
   EXPORT MWGroup := RECORD
-    Types.DocID         docID;
+    Types.DocNo         id;
     Types.Section       sect;
     DATASET(HitRecord)  hits{MAXCOUNT(Constants.Max_DocHits)};
   END;
   EXPORT AnswerRecord := RECORD
-    Types.DocID         docID;
+    Types.DocNo         id;
     DATASET(HitRecord)  hits{MAXCOUNT(Constants.Max_DocHits)};
   END;
 
   // Service output
   EXPORT TermDisplay := RECORD
     Types.TermID          id;
-    Types.TermString      srchArg{MAXLENGTH(types.maxTermlen), XPATH('word')};
-    Types.TermString      s1Arg{MAXLENGTH(types.maxTermlen), XPATH('attr1')};
-    Types.TermString      s2Arg{MAXLENGTH(types.maxTermlen), XPATH('attr2')};
-    STRING                typXML{MAXLENGTH(25), XPATH('Type_XML')};
-    STRING                typWord{MAXLENGTH(25), XPATH('Type_Term')};
+    Types.TermString      srchArg{XPATH('word')};
+    Types.TermString      s1Arg{XPATH('attr1')};
+    Types.TermString      s2Arg{XPATH('attr2')};
+    STRING                typData{XPATH('Type_Data')};
+    STRING                typTerm{XPATH('Type_Term')};
   END;
   EXPORT StageDisplay  := RECORD
     Types.Stage           stageIn{XPATH('Stage')};
@@ -143,7 +143,7 @@ EXPORT Layouts := MODULE
   END;
   EXPORT OperationDisplay := RECORD
     Types.OpCode          op;
-    STRING                opName{MAXLENGTH(25)};
+    STRING                opName;
     Types.Stage           stage;
     BOOLEAN               termInput;
     TermDisplay           term;
@@ -153,22 +153,19 @@ EXPORT Layouts := MODULE
                                  XPATH('Inputs/Input')};
   END;
   EXPORT HitDisplay := RECORD
-    Types.NodePos             start{XPATH('hit-start')};
-    Types.NodePos             stop{XPATH('hit-stop')};
+    Types.Position            start{XPATH('hit-start')};
+    Types.Position            stop{XPATH('hit-stop')};
     Types.TermID              termID{XPATH('term-id')};
   END;
   EXPORT Property := RECORD
     UNICODE     property_name{MAXLENGTH(Constants.Max_Prop_Name),
                               XPATH('property-name')};
-    UNICODE      property_value{MAXLENGTH(Constants.Max_Prop_Value),
+    UNICODE     property_value{MAXLENGTH(Constants.Max_Prop_Value),
                                XPATH('property-value')};
   END;
   EXPORT Doc := RECORD
-    Types.lni                  lni{XPATH('lni')};
-    Types.DocLength            size{XPATH('size')};
-    Types.DocVersion           version{XPATH('version')};
-    Types.rci                  rci{XPATH('rci')};
-    Types.Depth                level{XPATH('chunk-level')};
+    Types.DocIdentifier        docName{XPATH('Identifier')};
+    Types.Position             size{XPATH('size')};
     DATASET(Property)          props{MAXCOUNT(64),XPATH('props/property')};
     DATASET(HitDisplay)        hits{MAXCOUNT(Constants.Max_DocHits),
                                     XPATH('hits/hit')};

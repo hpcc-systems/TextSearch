@@ -37,7 +37,7 @@ EXPORT Pattern_Definitions := MACRO
 	PATTERN SearchLeftP		:= U'\\(';
 	PATTERN SearchRightP	:= U'\\)';
 	PATTERN SearchEqual		:= U'\\=';
-	PATTERN Symbol				:= SymbolNoSpec OR LeftParen OR RightParen OR Equal;
+  PATTERN SymbolChar		:= SymbolNoSpec OR LeftParen OR RightParen OR Equal;
 	PATTERN Symbol4Search	:= SymbolNoSpec OR SearchLeftP OR SearchRightP 
 													OR SearchEqual;
 	// Symbols that are noise
@@ -91,8 +91,10 @@ EXPORT Pattern_Definitions := MACRO
 	PATTERN LowSurrogate	:= PATTERN(U'[\uDC00-\uDFFF]');
 	PATTERN AnyPair				:= HighSurrogate LowSurrogate;
 	PATTERN AnyNoQuote		:= PATTERN(U'[\u0001-\u0021\u0023-\uFFFF]');
+  PATTERN AnyNoApos 		:= PATTERN(U'[\u0001-\u0026\u0028-\uFFFF]');
+  PATTERN AnyNoHyphen	  := PATTERN(U'[\u0001-\u002C\u002E-\uFFFF]');
 	// Singles
-	PATTERN Single 				:= Noise | Symbol | AnyPair | AnyChar;
+  PATTERN Single 				:= Noise | SymbolChar | AnyPair | AnyChar;
 	PATTERN Single4Search	:= Noise4Search | Symbol4Search | AnyPair | AnyChar;
 	
 	// Composite patterns

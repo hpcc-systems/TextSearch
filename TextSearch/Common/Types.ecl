@@ -16,7 +16,7 @@ EXPORT Types := MODULE
                                   SymbolChar,      // Ampersand, Section, et cetera
                                   NoiseChar,       // Noise, such as a comma or Tab
                                   WhiteSpace,      // discardable blanks
-                                  Null);           // posting from node with no value
+                                  SpecialStr);     // special keyword string
   EXPORT TermTypeAsString(TermType typ) := CASE(typ,
                     1    =>  V'Text String',
                     2    =>  V'Number',
@@ -26,41 +26,52 @@ EXPORT Types := MODULE
                     6    =>  V'Symbol Character',
                     7    =>  V'Noise Character',
                     8    =>  V'White Space',
-                    9    =>  V'Null',
+                    9    =>  V'Special Keyword',
                     V'Unknown');
-  EXPORT KeywordTypes     := [TermType.TextStr, TermType.Number,
+  EXPORT KeywordTTypes    := [TermType.TextStr, TermType.Number,
                               TermType.Date, TermType.SymbolChar];
+  EXPORT InvertTTypes     := [TermType.TextStr, TermType.Number,
+                              TermType.Date, TermType.Meta,
+                              TermType.Tag, TermType.SymbolChar,
+                              TermType.SpecialStr];
   EXPORT DataType         := ENUM(UNSIGNED1, Unknown=0,
                                   RawData,        // data outside of an XML structure
                                   XMLDecl,        // XML Declaration
                                   DocType,        // part of a doctype declaration
-                                  EmptyElem,      // Empty element  (e.g., <Tag a="x"/>)
                                   Element,        // Element tag
                                   Attribute,      // Attribute tag
-                                  AttrValue,      // Attribute value
                                   PCDATA,         // Parsed Characer Data
                                   CDATA,          // Character Data
                                   PI,             // Processing Instruction
-                                  EntityDef);     // Entity definition
+                                  EndElement,     // End tag
+                                  TagEndSeq,      // tag end sequence
+                                  EntityDef,      // Entity definition
+                                  XMLComment);    // Comment
+  EXPORT InvertDTypes      := [DataType.RawData, DataType.Element,
+                               DataType.Attribute, DataType.PCDATA,
+                               DataType.CDATA];
+  EXPORT ElementDTypes     := [DataType.Element];
+  EXPORT AttribDTypes      := [DataType.Attribute];
   EXPORT DataTypeAsString(DataType typ) := CASE(typ,
                     1    =>  V'Raw data',
                     2    =>  V'XML Declaration',
                     3    =>  V'Doc Type Decl',
-                    4    =>  V'Empty element',
-                    5    =>  V'Element',
-                    6    =>  V'Attribute',
-                    7    =>  V'Attribute Value',
-                    8    =>  V'PCDATA',
-                    9    =>  V'CDATA',
-                    10   =>  V'Processing Inst',
+                    4    =>  V'Element',
+                    5    =>  V'Attribute',
+                    6    =>  V'PCDATA',
+                    7    =>  V'CDATA',
+                    8    =>  V'Processing Inst',
+                    9    =>  V'End Tag',
+                    10   =>  V'Tag end seq',
                     11   =>  V'Entity Definition',
-                    'Unknown');
+                    12   =>  V'XML Comment',
+                    V'Unknown');
 
-  EXPORT TermLength       := UNSIGNED4;
+  EXPORT TermLength       := UNSIGNED2;
   EXPORT TermString       := UNICODE;
   EXPORT MaxTermLen       := 128;
   EXPORT TermFixed        := UNICODE20;
-  EXPORT Frequency        := UNSIGNED8;
+  EXPORT Frequency        := INTEGER8;
   EXPORT LetterPattern    := ENUM(UNSIGNED1, Unknown=0, NoLetters,
                                   TitleCase, UpperCase, LowerCase, MixedCase);
   EXPORT LetterPatternAsString(LetterPattern p) := CASE(p,
@@ -71,4 +82,9 @@ EXPORT Types := MODULE
                           5        => v'Mixed case',
                           v'Unknown');
   EXPORT Ordinal          := UNSIGNED4;
+  EXPORT PathString       := UNICODE;
+  EXPORT Version          := UNSIGNED2;
+  EXPORT DocIdentifier    := UNICODE;
+  EXPORT SequenceKey      := STRING50;
+  EXPORT SlugLine         := UNICODE;
 END;

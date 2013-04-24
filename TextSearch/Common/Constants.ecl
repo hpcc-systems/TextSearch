@@ -1,4 +1,4 @@
-﻿EXPORT Constants := MODULE
+EXPORT Constants := MODULE
   // Limit Constants
   EXPORT Max_SearchTerms := 1000;
   EXPORT Max_Ops  := 2 * Max_SearchTerms;
@@ -16,6 +16,7 @@
   EXPORT Max_Msg_Length := 75;
   EXPORT Max_Types  := 5;
   EXPORT Max_Node_Depth := 50;
+  EXPORT Key_Levels := 5;     // numbered 0 to 4, need to change by level attrs
 
   // Nominal Constants
   EXPORT Nominal_SeqKey      := 1024;
