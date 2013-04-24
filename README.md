@@ -1,4 +1,0 @@
-TextSearch
-==========
-
-TextSearch ECL code

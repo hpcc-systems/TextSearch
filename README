@@ -1,0 +1,12 @@
+TextSearch
+==========
+
+TextSearch ECL code
+Initial version of attributes from XCR_DocSearch.  Attributes need to be
+modified to remove dependencies upon the MNCR code base.
+
+Attributes structured as:
+Common:  Layouts, types, and other common definitions.
+Inverted: Attributes that define the inversion and related.
+Regression: Attributes that define regression tests.
+Resolved: Attributes that define the answer set.
