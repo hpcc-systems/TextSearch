@@ -1,4 +1,4 @@
-// A collection of equates and mapping functions
+﻿// A collection of equates and mapping functions
 IMPORT TextSearch.Common;
 IMPORT TextSearch.Resolved;
 IMPORT TextSearch.Resolved.Types;
@@ -9,11 +9,11 @@ EXPORT Map_Search_Operations := MODULE
   EXPORT Types.Opcode code_Unknown :=   99;
   EXPORT Types.OpCode code_GET     :=   1;
   EXPORT Types.Opcode code_LITGET  :=   2;
-  EXPORT Types.Opcode code_MWSGET  :=    3;
-  EXPORT Types.OpCode code_TAGGET  :=    4;
+  EXPORT Types.Opcode code_MWSGET  :=   3;
+  EXPORT Types.OpCode code_TAGGET  :=   4;
   EXPORT Types.OpCode code_AND     :=   5;
   EXPORT Types.OpCode code_ANDNOT  :=   6;
-  EXPORT Types.OpCode  code_OR     :=   7;
+  EXPORT Types.OpCode code_OR      :=   7;
   EXPORT Types.OpCode code_PRE     :=   8;
   EXPORT Types.OpCode code_W       :=  10;
   EXPORT Types.Opcode code_NOTW    :=  11;
@@ -35,21 +35,21 @@ EXPORT Map_Search_Operations := MODULE
   EXPORT Types.OpCode code_FLT_ATM :=  27;
   EXPORT Types.OpCode code_FLT_ATX :=  28;
   EXPORT Types.OpCode code_XPRED   :=  29;
-  EXPORT Types.OpCode code_NAT_EQ  :=   31;
-  EXPORT Types.OpCode code_NAT_NEQ :=   32;
-  EXPORT Types.OpCode code_NAT_BTW :=   33;
-  EXPORT Types.OpCode code_NAT_LE  :=   34;
-  EXPORT Types.OpCode code_NAT_LT  :=   35;
-  EXPORT Types.OpCode code_NAT_GE  :=   36;
-  EXPORT Types.OpCode code_NAT_GT  :=   37;
-  EXPORT Types.OpCode code_NAT_EXC :=   38;
-  EXPORT Types.OpCode code_ATR_EQ  :=   41;
-  EXPORT Types.OpCode code_ATR_NEQ :=   42;
-  EXPORT Types.OpCode code_ATR_BTW :=   43;
-  EXPORT Types.OpCode code_ATR_LE  :=   44;
-  EXPORT Types.OpCode code_ATR_LT  :=   45;
-  EXPORT Types.OpCode code_ATR_GE  :=   46;
-  EXPORT Types.OpCode code_ATR_GT  :=   47;
+  EXPORT Types.OpCode code_NAT_EQ  :=  31;
+  EXPORT Types.OpCode code_NAT_NEQ :=  32;
+  EXPORT Types.OpCode code_NAT_BTW :=  33;
+  EXPORT Types.OpCode code_NAT_LE  :=  34;
+  EXPORT Types.OpCode code_NAT_LT  :=  35;
+  EXPORT Types.OpCode code_NAT_GE  :=  36;
+  EXPORT Types.OpCode code_NAT_GT  :=  37;
+  EXPORT Types.OpCode code_NAT_EXC :=  38;
+  EXPORT Types.OpCode code_ATR_EQ  :=  41;
+  EXPORT Types.OpCode code_ATR_NEQ :=  42;
+  EXPORT Types.OpCode code_ATR_BTW :=  43;
+  EXPORT Types.OpCode code_ATR_LE  :=  44;
+  EXPORT Types.OpCode code_ATR_LT  :=  45;
+  EXPORT Types.OpCode code_ATR_GE  :=  46;
+  EXPORT Types.OpCode code_ATR_GT  :=  47;
   EXPORT Types.OpCode code_ATR_EXC :=  48;
   EXPORT Types.OpCode code_SetFlt  :=  51;
   EXPORT Types.OpCode code_GETKPH  :=  61;
@@ -230,7 +230,7 @@ EXPORT Map_Search_Operations := MODULE
           ,{code_MWSGET,  Get_Rank,        0, FALSE, Any_In,       Mask_Term,    Oper}
           ,{code_TAGGET,  Get_Rank,        0, FALSE, Any_In,       Mask_Tag,     Oper}
           ,{code_AND,     AND_Rank,        2, TRUE,  Any_In,       Mask_Set,     Combo}
-          ,{code_FLT_AND  AND_Rank,        2, TRUE,  Any_In,       Mask_Set,     Combo}
+          ,{code_FLT_AND, AND_Rank,        2, TRUE,  Any_In,       Mask_Set,     Combo}
           ,{code_ANDNOT,  ANDNOT_Rank,     2, FALSE, Any_In,       Mask_Set,     Combo}
           ,{code_F_ANDNT, ANDNOT_Rank,     2, FALSE, Any_In,       Mask_Set,     Combo}
           ,{code_OR,      OR_Rank,         2, TRUE,  Any_In,       Mask_OR,      Both}
