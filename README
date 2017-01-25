@@ -2,8 +2,7 @@ TextSearch
 ==========
 
 TextSearch ECL code
-Initial version of attributes from XCR_DocSearch.  Attributes need to be
-modified to remove dependencies upon the MNCR code base.
+Initial version of attributes.
 
 Attributes structured as:
 Common:  Layouts, types, and other common definitions.

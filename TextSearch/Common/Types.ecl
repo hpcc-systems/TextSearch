@@ -15,7 +15,7 @@ EXPORT Types := MODULE
                                   Tag,             // Element or attribute
                                   SymbolChar,      // Ampersand, Section, et cetera
                                   NoiseChar,       // Noise, such as a comma or Tab
-                                  WhiteSpace,      // discardable blanks
+                                  WhiteSpace,      // blanks
                                   SpecialStr);     // special keyword string
   EXPORT TermTypeAsString(TermType typ) := CASE(typ,
                     1    =>  V'Text String',
