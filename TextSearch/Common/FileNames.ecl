@@ -9,11 +9,11 @@ IMPORT TextSearch.Common;
 // Instance is FileName.Instance; and Suffix is the data type as below.
 FileName_Info := Common.FileName_Info;
 
-EXPORT FileNames(FileName_Info info) := MODULE
+EXPORT FileNames(FileName_Info info, UNSIGNED Alias=0) := MODULE
   SHARED DocSearchPrefix := '::DocSearch::Level-';
   SHARED Name(STRING suffix, UNSIGNED lvl) := info.Prefix + DocSearchPrefix
                                             + INTFORMAT(lvl, 2, 1) + '::'
-                                            + info.Instance + '::' + suffix;
+                                            + info.UseInstance(Alias) + '::' + suffix;
 
   EXPORT DocumentIndex(UNSIGNED lvl=0) := Name('DocIndx', lvl);
   EXPORT TriGramDictionary(UNSIGNED lvl=0) := Name('TriDctIndx', lvl);
@@ -28,4 +28,26 @@ EXPORT FileNames(FileName_Info info) := MODULE
   EXPORT TagDictionary(UNSIGNED lvl=0) := Name('TagIndx', lvl);
   EXPORT IdentIndx(UNSIGNED1 lvl=0) := Name('IdentIndx', lvl);
   EXPORT DeleteIndex(UNSIGNED1 lvl=0) := NAME('DelIndx', lvl);
+  EXPORT NameEnum := Common.Types.FileEnum;
+  EXPORT NameByEnum(NameEnum ne, UNSIGNED1 lvl=0)
+      := CASE(ne,
+              NameEnum.DocumentIndex                => DocumentIndex(lvl),
+              NameEnum.TriGramDictionary            => TriGramDictionary(lvl),
+              NameEnum.TermDictionary               => TermDictionary(lvl),
+              NameEnum.TriGramIndex                 => TriGramIndex(lvl),
+              NameEnum.TermIndex                    => TermIndex(lvl),
+              NameEnum.PhraseIndex                  => PhraseIndex(lvl),
+              NameEnum.ElementIndex                 => ElementIndex(lvl),
+              NameEnum.AttributeIndex               => AttributeIndex(lvl),
+              NameEnum.RangeIndex                   => RangeIndex(lvl),
+              NameEnum.NameSpaceDict                => NameSpaceDict(lvl),
+              NameEnum.TagDictionary                => TagDictionary(lvl),
+              NameEnum.IdentIndx                    => IdentIndx(lvl),
+              NameEnum.DeleteIndex                  => DeleteIndex(lvl),
+              Name('BadEnum', lvl));
+  // the currently building keys.  Add triGramDictionary and TriGramIndex when ready
+  EXPORT NameSet := [NameEnum.DocumentIndex, NameEnum.TermDictionary, NameEnum.TermIndex,
+                     NameEnum.PhraseIndex, NameEnum.ElementIndex, NameEnum.AttributeIndex,
+                     NameEnum.RangeIndex, NameEnum.TagDictionary, NameEnum.IdentIndx,
+                     NameEnum.DeleteIndex];
 END;

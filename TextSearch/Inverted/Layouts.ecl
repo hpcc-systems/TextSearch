@@ -35,4 +35,15 @@ EXPORT Layouts := MODULE
     Types.PathString          pathString;
     Types.TermString          parentName;
   END;
+  // Record for the machinery to manage file names with super keys (super files)
+  EXPORT Management_Task := ENUM(UNSIGNED1, NoOp=0, Replace); // Future
+  EXPORT Managed_File_Names := RECORD
+    STRING logical_name;
+    STRING current_name;
+    STRING previous_name;
+    STRING past_previous_name;
+    STRING deleted_name;
+    BOOLEAN delete_deleted;
+    Management_Task task;
+  END;
 END;
