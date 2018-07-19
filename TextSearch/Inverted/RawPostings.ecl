@@ -56,7 +56,7 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     SELF := [];
   END;
   StateRec next(Posting posting, StateRec st) := TRANSFORM
-    incrKWP           := IF(isKeyword(posting.typData), 1, 0);
+    incrKWP           := IF(isKeyword(posting.typTerm), 1, 0);
     incrOrdinal       := IF(isElement(posting.typData), 1, 0);
     top               := st.tagstack[1];
     topDepth          := st.tagstack[1].depth;
@@ -103,11 +103,11 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     topParentName     := st.tagstack[1].parentName;
     toppreord         := st.tagstack[1].preorder;
     docChanged        := posting.id <> st.prevID;
-    incrKWP           := IF(isKeyword(posting.typData), 1, 0);
+    incrKWP           := IF(isKeyword(posting.typTerm), 1, 0);
     incrOrdinal       := IF(isElement(posting.typData), 1, 0);
     closeElement      := posting.typData=DataType.EndElement;
     SELF.kwp          := IF(docChanged, 1, st.nextKWP);
-    SELF.depth        := st.currDepth;
+    SELF.depth        := IF(closeElement, st.currDepth-1, st.currDepth);
     SELF.parentOrd    := toppreord;
     SELF.preorder     := IF(docChanged, 0, st.lastOrd) + incrOrdinal;
     SELF.pathString   := st.pathString;
