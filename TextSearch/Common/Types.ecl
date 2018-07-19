@@ -87,4 +87,8 @@ EXPORT Types := MODULE
   EXPORT DocIdentifier    := UNICODE;
   EXPORT SequenceKey      := STRING50;
   EXPORT SlugLine         := UNICODE;
+  EXPORT FileEnum := ENUM(UNSIGNED1, Unknown=0, DocumentIndex, TriGramDictionary,
+                          TermDictionary, TriGramIndex, TermIndex, PhraseIndex,
+                          ELementIndex, AttributeIndex, RangeIndex, NameSpaceDict,
+                          TagDictionary, IdentIndx, DeleteIndex);
 END;
