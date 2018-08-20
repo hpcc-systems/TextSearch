@@ -1,4 +1,4 @@
-EXPORT Constants := MODULE
+﻿EXPORT Constants := MODULE
   // Limit Constants
   EXPORT Max_SearchTerms := 1000;
   EXPORT Max_Ops  := 2 * Max_SearchTerms;

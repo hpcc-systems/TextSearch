@@ -1,4 +1,4 @@
-// Make the special posting records.
+﻿// Make the special posting records.
 // Right now, the only special records are the document records for
 //the universal document set operation
 EXPORT SpecialPostings(DATASET(Layouts.Posting) inp) := FUNCTION
