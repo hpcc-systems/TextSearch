@@ -9,7 +9,7 @@ EXPORT Base_Data(Common.FileName_Info info,
                  DATASET(Inv_Layouts.DocumentIngest) docsIn):= MODULE
   // The documents must be enumerated
   SHARED keyword_mod := Common.Default_Keywording;
-  EXPORT enumDocs    := Inverted.EnumeratedDocs(info, docsIn);
+  EXPORT enumDocs    := Inverted.EnumeratedDocs(info, docsIn);//start here 
   EXPORT rawPostings := Inverted.RawPostings(enumDocs);
   EXPORT DocIndex    := Inverted.DocIndex(enumDocs, UNGROUP(rawPostings));
   // Need to get Replaced doc list

@@ -2,7 +2,7 @@
 IMPORT TextSearch.Common.Types;
 IMPORT TextSearch.Inverted.Layouts AS InvertedLayouts;
 EXPORT Layouts := MODULE
-  EXPORT DocIndex := RECORD(InvertedLayouts.Document-content)
+  EXPORT DocIndex := RECORD(InvertedLayouts.Document-content)//I think here error -content what is?
     Types.KWP                 keywords;
     Types.Position            docLength;
     STRING18                  wunit;

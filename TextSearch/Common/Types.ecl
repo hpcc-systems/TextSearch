@@ -1,4 +1,4 @@
-// Types for search system
+﻿// Types for search system
 
 EXPORT Types := MODULE
   EXPORT DocNo            := UNSIGNED4;
@@ -16,8 +16,9 @@ EXPORT Types := MODULE
                                   SymbolChar,      // Ampersand, Section, et cetera
                                   NoiseChar,       // Noise, such as a comma or Tab
                                   WhiteSpace,      // blanks
-                                  SpecialStr);     // special keyword string
-  EXPORT TermTypeAsString(TermType typ) := CASE(typ,
+                                  SpecialStr,			 // special keyword string
+																	AcroStr);     	 //Initialism and Acronyms
+  EXPORT TermTypeAsString(TermType typ) := CASE(typ, //meaning if value is 1 then let value of type=Text string
                     1    =>  V'Text String',
                     2    =>  V'Number',
                     3    =>  V'Date',
@@ -27,9 +28,10 @@ EXPORT Types := MODULE
                     7    =>  V'Noise Character',
                     8    =>  V'White Space',
                     9    =>  V'Special Keyword',
+										10   => V'Initialism and Acronyms',
                     V'Unknown');
   EXPORT KeywordTTypes    := [TermType.TextStr, TermType.Number,
-                              TermType.Date, TermType.SymbolChar];
+                              TermType.Date, TermType.SymbolChar,TermType.AcroStr];
   EXPORT InvertTTypes     := [TermType.TextStr, TermType.Number,
                               TermType.Date, TermType.Meta,
                               TermType.Tag, TermType.SymbolChar,
@@ -87,8 +89,4 @@ EXPORT Types := MODULE
   EXPORT DocIdentifier    := UNICODE;
   EXPORT SequenceKey      := STRING50;
   EXPORT SlugLine         := UNICODE;
-  EXPORT FileEnum := ENUM(UNSIGNED1, Unknown=0, DocumentIndex, TriGramDictionary,
-                          TermDictionary, TriGramIndex, TermIndex, PhraseIndex,
-                          ELementIndex, AttributeIndex, RangeIndex, NameSpaceDict,
-                          TagDictionary, IdentIndx, DeleteIndex);
 END;

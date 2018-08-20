@@ -1,4 +1,4 @@
-EXPORT Pattern_Definitions := MACRO
+﻿EXPORT Pattern_Definitions := MACRO
   // Pure Whitespace
   PATTERN LowControl    := PATTERN(U'[\u0001-\u0008\u000B\u000C\u000E\u000F]');
   PATTERN HighControl    := PATTERN(U'[\u007F-\u009F]');
@@ -100,6 +100,7 @@ EXPORT Pattern_Definitions := MACRO
   // Composite patterns
   // Word strings
   PATTERN Letter        := PATTERN(U'[[:alpha:]]');
+	//PATTERN NOLetter        := PATTERN(U'[^[:alpha:]]');
   PATTERN LowerCase      := PATTERN(U'[[:lower:]]');
   PATTERN UpperCase      := PATTERN(U'[[:upper:]]');
   PATTERN Digit          := PATTERN(U'[[:digit:]]');

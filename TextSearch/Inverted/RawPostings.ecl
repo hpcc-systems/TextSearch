@@ -1,4 +1,4 @@
-//Convert raw content into posting records
+﻿//Convert raw content into posting records
 IMPORT TextSearch.Common;
 IMPORT TextSearch.Common.Types;
 IMPORT TextSearch.Inverted;
@@ -30,6 +30,7 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     Types.TermLength            lenText;
     Types.KWP                   keywords;
     Types.Ordinal               preorder;
+		 
   END;
   StateRec := RECORD
     Types.Depth                 currDepth;
@@ -49,6 +50,7 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     SELF.preorder      := IF(docChanged, 0, st.lastOrd) + 1;
     SELF.lenText       := st.lenText;
     SELF.keywords      := st.keywords;
+		 
   END;
   StateRec initState() := TRANSFORM
     SELF.lastOrd       := 0;
@@ -107,6 +109,7 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     incrOrdinal       := IF(isElement(posting.typData), 1, 0);
     closeElement      := posting.typData=DataType.EndElement;
     SELF.kwp          := IF(docChanged, 1, st.nextKWP);
+		
     SELF.depth        := IF(closeElement, st.currDepth-1, st.currDepth);
     SELF.parentOrd    := toppreord;
     SELF.preorder     := IF(docChanged, 0, st.lastOrd) + incrOrdinal;
@@ -114,6 +117,7 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     SELF.parentName   := topParentName;
     SELF.lenText      := IF(closeElement, st.lenText, posting.lenText);
     SELF.keywords     := IF(closeElement, st.keywords, posting.keywords);
+		SELF.typData	    :=IF(SELF.depth>0 and posting.typData =Types.DataType.RawData ,Types.DataType.PCDATA,Types.DataType.RawData );
     SELF              := posting;
   END;
   initalV := ROW(initState());
