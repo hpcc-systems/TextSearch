@@ -1,4 +1,4 @@
-//Convert raw content into posting records
+﻿//Convert raw content into posting records
 IMPORT TextSearch.Common;
 IMPORT TextSearch.Common.Types;
 IMPORT TextSearch.Inverted;
@@ -114,6 +114,7 @@ EXPORT GROUPED DATASET(Posting) RawPostings(DATASET(Document) docIn) := FUNCTION
     SELF.parentName   := topParentName;
     SELF.lenText      := IF(closeElement, st.lenText, posting.lenText);
     SELF.keywords     := IF(closeElement, st.keywords, posting.keywords);
+    SELF.typData      :=IF(SELF.depth>0 and posting.typData =Types.DataType.RawData ,Types.DataType.PCDATA,Types.DataType.RawData);
     SELF              := posting;
   END;
   initalV := ROW(initState());
