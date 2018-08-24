@@ -1,7 +1,8 @@
-// Parse contents of the document
+﻿// Parse contents of the document
 IMPORT TextSearch;
 IMPORT TextSearch.Common;
 IMPORT TextSearch.Inverted.Layouts;
+IMPORT STD;
 Document := Layouts.Document;
 RawPosting := Layouts.RawPosting;
 Types := Common.Types;
@@ -37,11 +38,14 @@ EXPORT DATASET(RawPosting) ParsedText(DATASET(Document) docsInput) := FUNCTION
   PATTERN EmptyEnd      := REPEAT(AttrListItem) OPT(Spaces) U'/>';
   PATTERN XMLElement    := U'<' XMLName BEFORE ContainerEnd;
   PATTERN XMLEmpty      := U'<' XMLName BEFORE EmptyEnd;
-
-  RULE myRule           := XMLDecl OR XMLComment OR XMLElement OR XMLEmpty OR
+  
+  PATTERN Initialism_Pattern :=PATTERN(U'[a-zA-Z]+[.][a-zA-Z]+[.][a-zA-Z]*[.]*[a-zA-Z]*');
+  
+  RULE myRule           := Initialism_Pattern OR WordAllLower OR WordAllUpper OR WordTitleCase OR WordMixedCase OR
+                           XMLDecl OR XMLComment OR XMLElement OR XMLEmpty OR
                            AttributeExpr OR EndElement OR TagEndSeq OR
                            WordAlphaNum OR WhiteSpace OR PoundCode OR
-                           SymbolChar OR Noise OR AnyChar OR AnyPair;
+                           SymbolChar OR Noise OR AnyChar OR AnyPair OR WordNoLetters;
 
   RawPosting parseString(Document doc) := TRANSFORM
     SELF.id        := doc.id;;
@@ -58,12 +62,24 @@ EXPORT DATASET(RawPosting) ParsedText(DATASET(Document) docsInput) := FUNCTION
         MATCHED(WordAlphaNum)                    => MATCHLENGTH(MyRule),
         MATCHED(AnyChar)                         => MATCHLENGTH(MyRule),
         MATCHED(AnyPair)                         => MATCHLENGTH(MyRule),
+        MATCHED(Initialism_Pattern)              => MATCHLENGTH(MyRule),
+        MATCHED(WordAllUpper)                    => MATCHLENGTH(MyRule),
+        MATCHED(WordAllLower)                    => MATCHLENGTH(MyRule),
+        MATCHED(WordMixedCase)                   => MATCHLENGTH(MyRule),
+        MATCHED(WordNoLetters)                   => MATCHLENGTH(MyRule),
+        MATCHED(WordTitleCase)                   => MATCHLENGTH(MyRule),
         0);
     SELF.keywords  := MAP(
         MATCHED(SymbolChar)                      => 1,
         MATCHED(WordAlphaNum)                    => 1,
         MATCHED(AnyChar)                         => 1,
         MATCHED(AnyPair)                         => 1,
+        MATCHED(Initialism_Pattern)              => MATCHLENGTH(Initialism_Pattern)- STD.Str.FindCount((STRING)MATCHTEXT(Initialism_Pattern), '.'),
+        MATCHED(WordAllUpper)                    =>1,
+        MATCHED(WordAllLower)                    =>1,
+        MATCHED(WordMixedCase)                   =>1,
+        MATCHED(WordTitleCase)                   =>1,
+        MATCHED(WordNoLetters)                   =>1,
         0);
     SELF.typTerm   := MAP(
         MATCHED(WhiteSpace)                      => Types.TermType.WhiteSpace,
@@ -80,6 +96,12 @@ EXPORT DATASET(RawPosting) ParsedText(DATASET(Document) docsInput) := FUNCTION
         MATCHED(EndElement)                      => Types.TermType.Tag,
         MATCHED(TagEndSeq)                       => Types.TermType.Tag,
         MATCHED(PoundCode)                       => Types.TermType.TextStr,
+        MATCHED(Initialism_Pattern)              => Types.TermType.AcroStr,
+        MATCHED(WordAllUpper)                    => Types.TermType.TextStr,
+        MATCHED(WordAllLower)                    => Types.TermType.TextStr,
+        MATCHED(WordMixedCase)                   => Types.TermType.TextStr,
+        MATCHED(WordTitleCase)                   => Types.TermType.TextStr,
+        MATCHED(WordNoLetters)                   => Types.TermType.SymbolChar,
         Types.TermType.Unknown);
     SELF.typData   := MAP(
         MATCHED(WhiteSpace)                      => Types.DataType.RawData,
@@ -97,6 +119,12 @@ EXPORT DATASET(RawPosting) ParsedText(DATASET(Document) docsInput) := FUNCTION
         MATCHED(EndElement)                      => Types.DataType.EndElement,
         MATCHED(TagEndSeq)                       => Types.DataType.TagEndSeq,
         MATCHED(PoundCode)                       => Types.DataType.RawData,
+        MATCHED(Initialism_Pattern)              => Types.DataType.RawData,
+        MATCHED(WordAllUpper)                    => Types.DataType.RawData,
+        MATCHED(WordAllLower)                    => Types.DataType.RawData,
+        MATCHED(WordMixedCase)                   => Types.DataType.RawData,
+        MATCHED(WordTitleCase)                   => Types.DataType.RawData,
+        MATCHED(WordNoLetters)                   => Types.DataType.RawData,
         Types.DataType.Unknown);
     SELF.tagValue  := MAP(
         NOT MATCHED(AttributeExpr)              => U'',
@@ -113,7 +141,14 @@ EXPORT DATASET(RawPosting) ParsedText(DATASET(Document) docsInput) := FUNCTION
     SELF.preorder  := 0;
     SELF.parentOrd := 0;
     SELF.parentName:= U'';
-    SELF.lp        := Types.LetterPattern.Unknown;
+    SELF.lp        := MAP(
+        MATCHED(WordAllUpper)                   => Types.LetterPattern.UpperCase,
+        MATCHED(WordAllLower)                   => Types.LetterPattern.LowerCase,
+        MATCHED(WordMixedCase)                  => Types.LetterPattern.MixedCase,
+        MATCHED(WordNoLetters)                  => Types.LetterPattern.NoLetters,
+        MATCHED(WordTitleCase)                  => Types.LetterPattern.TitleCase,
+        Types.LetterPattern.Unknown);
+
     SELF.term      := MATCHUNICODE(MyRule);
   END;
   p0 := PARSE(docsInput, content, myRule, parseString(LEFT), MAX, MANY, NOT MATCHED);

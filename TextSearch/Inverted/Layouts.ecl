@@ -7,6 +7,7 @@ EXPORT Layouts := MODULE
     Types.SequenceKey       seqKey;
     Types.SlugLine          slugLine;
     UNICODE                 content;
+    UNICODE                 init;
   END;
   EXPORT DocumentNo := RECORD
     Types.DocNo id;
